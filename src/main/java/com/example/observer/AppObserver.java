@@ -1,5 +1,6 @@
 package com.example.observer;
 
+import com.example.model.Usuario;
 import com.sun.tools.javac.comp.Flow;
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
@@ -19,6 +20,8 @@ import static java.nio.file.StandardWatchEventKinds.*;
 public class AppObserver {
 
     static BufferedReader bufferedReader;
+    static Queue<WatchEvent> eventsQueue = new LinkedList<>();
+    static Queue<Usuario> usuariosQueue = new LinkedList<>();
 
     public void main() {
 
@@ -48,7 +51,7 @@ public class AppObserver {
                     break;
                 }
 
-                final Path dir = directoriesByKey.get(key2);
+                //final Path dir = directoriesByKey.get(key2);
                 for (final WatchEvent<?> event : key2.pollEvents()) {
                     subscriber.onNext(event);
                 }
@@ -71,10 +74,14 @@ public class AppObserver {
 //        });
 
         observable
-                .filter(o -> o.kind().equals(ENTRY_MODIFY))
-                .filter(o -> o.context().toString().equals("usuarios.txt"))
-                .doOnNext(watchEvent -> System.out.println(watchEvent.context() + " " + watchEvent.kind()))
-                .subscribe();
+            .filter(o -> o.kind().equals(ENTRY_MODIFY))
+            .filter(o -> o.context().toString().equals("usuarios.txt"))
+            .doOnNext(watchEvent -> System.out.println(watchEvent.context()))
+            .subscribe();
+
+//        Observable.fromIterable(eventsQueue)
+//            .doOnNext(watchEvent -> System.out.println(watchEvent.context()))
+//            .subscribe();
     }
 
     public void observeList(){

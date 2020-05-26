@@ -44,7 +44,7 @@ public class FileManager extends Thread {
                             .empresa(lineString.substring(50, 80).trim())
                             .escuela(lineString.substring(80,130).trim())
                             .edad(Integer.valueOf(lineString.substring(130, 132)))
-                            .email(lineString.substring(132, 182).trim())
+                            .email(lineString.substring(132).trim())
                             .build();
 
                     usuarios.add(usuario);
